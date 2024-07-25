@@ -396,14 +396,14 @@
           // Reset and fetch new values from API
           this.setStats(symbol);
           const xhr = new XMLHttpRequest();
-          xhr.open('GET', `https://coincap.io/page/${symbol}`, true);
-          xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+          // Updated API URL for CoinGecko
+          xhr.open('GET', `https://api.coingecko.com/api/v3/simple/price?ids=${symbol.toLowerCase()}&vs_currencies=usd&include_market_cap=true&include_supply=true`, true);
           xhr.responseType = 'json';
           xhr.addEventListener('load', e => {
-            if (!xhr.response || !xhr.response.id) return;
-            let price = parseFloat(xhr.response.price) || 0;
-            let cap = parseFloat(xhr.response.market_cap) || 0;
-            let supply = parseFloat(xhr.response.supply) || 0;
+            if (!xhr.response || !xhr.response[symbol.toLowerCase()]) return;
+            let price = xhr.response[symbol.toLowerCase()].usd || 0;
+            let cap = xhr.response[symbol.toLowerCase()].usd_market_cap || 0; // Adjusted to match CoinGecko's response
+            let supply = xhr.response[symbol.toLowerCase()].supply || 0; // Adjusted to match CoinGecko's response
             this.setStats(symbol, { price, cap, supply });
           });
           xhr.send();
@@ -415,4 +415,4 @@
     });
   </script>
 </body>
-            </html>
+</html>

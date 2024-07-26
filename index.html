@@ -1,418 +1,260 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>rmux</title>
-  <style>
-    /* Variables */
-    :root {
-      --colorPrimary: black; /* Change this to your desired color */
-      --padSpace: 1em;
-      --maxWidth: 520px;
-      --heroHeight: 10em;
-      --borderRadius: 6px;
-      --fxSpeed: 300ms;
-      --bgColor: #ffffff;
-      --fontColor: rgba(0, 0, 0, 255); /* Adjusted for darken and desaturate */
-      --fontFamily: 'Merriweather Sans', Arial, sans-serif;
-      --fontSize: 15px;
-      --shadowSmall: 0 1px 3px rgba(0, 0, 0, 0.3);
-      --shadowBig: 0 2px 18px rgba(0, 0, 0, 0.5);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate for a New Phone</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #121212, #1e1e1e);
+            color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
 
-    /* Reset */
-    *, *:before, *:after {
-      outline: 0;
-      margin: 0;
-      padding: 0;
-      border: 0;
-      text-decoration: none;
-      box-sizing: border-box;
-      transition: color var(--fxSpeed) ease-out,
-                  background var(--fxSpeed) ease-out,
-                  border var(--fxSpeed) ease-out,
-                  transform var(--fxSpeed) ease-out,
-                  opacity var(--fxSpeed) ease-out;
-    }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 40px;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.5s ease;
+        }
 
-    /* Document */
-    html, body {
-      display: block;
-      position: relative;
-      min-height: 100vh;
-    }
-    body {
-      padding: calc(var(--padSpace) * 4) 0;
-      overflow: hidden;
-      overflow-y: auto;
-      background-color: rgba(255, 255, 255, 255); /* Adjusted for darken */
-      background-image: radial-gradient(circle, rgba(0, 0, 0, 255) 0%, rgba(0, 0, 0, 255) 100%);
-      background-position: center center;
-      background-repeat: no-repeat;
-      font-family: var(--fontFamily);
-      font-size: var(--fontSize);
-      line-height: normal;
-      color: var(--fontColor);
-    }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    /* Form elements */
-    input, textarea, select, options, button {
-      font-family: inherit;
-      font-size: inherit;
-      line-height: inherit;
-      font-weight: normal;
-      background: none;
-    }
+        h1 {
+            color: #C8102E; /* Boston Red */
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
 
-    /* Card */
-    .card-wrap {
-      overflow: hidden;
-      margin: 0 auto;
-      max-width: var(--maxWidth);
-      background-color: var(--bgColor);
-      border-radius: var(--borderRadius);
-      box-shadow: var(--shadowBig);
-    }
+        p {
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
 
-    /* User info */
-    .card-user {
-      position: relative;
-    }
-    .card-user-hero {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: var(--heroHeight);
-      background-color: var(--colorPrimary);
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-size: 120%;
-      z-index: 0;
-    }
-    .card-user-row {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: stretch;
-      position: relative;
-      padding: var(--padSpace);
-      padding-top: calc(var(--heroHeight) - 3em);
-      margin-bottom: var(--padSpace);
-    }
-    .card-user-avatar {
-      margin-right: var(--padSpace);
-    }
-    .card-user-avatar > img {
-      display: block;
-      width: 6em;
-      height: 6em;
-      border: 3px solid var(--bgColor);
-      border-radius: 100px;
-      box-shadow: var(--shadowBig);
-    }
-    .card-user-details {
-      flex: 1;
-      margin-right: var(--padSpace);
-      margin-top: .6em;
-      line-height: normal;
-      height: 85px;
-    }
-    .card-user-name {
-      font-size: 200%;
-      letter-spacing: -1px;
-      line-height: 1em;
-      color: var(--bgColor);
-      text-shadow: var(--shadowBig);
-    }
-    .card-user-info {
-      line-height: 1em;
-      padding-top: var(--padSpace);
-      color: rgba(0, 0, 0, 255); /* Adjusted for darken */
-    }
-    .card-user-cta > a {
-      display: block;
-      cursor: pointer;
-      color: var(--bgColor);
-      font-weight: normal;
-      padding: calc(var(--padSpace) * .8) var(--padSpace);
-      border-radius: 100px;
-      box-shadow: var(--shadowBig);
-      text-shadow: var(--shadowSmall);
-      background-color: rgba(204, 0, 0, 255); /* Adjusted for lighten */
-    }
-    .card-user-cta > a:hover {
-      background-color: rgba(204, 0, 0, 255); /* Adjusted for lighten */
-    }
+        .profile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
 
-    /* Tabs section */
-    .tabs-wrap {
-      position: relative;
-    }
-    .tabs-nav {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: stretch;
-      position: relative;
-      overflow: hidden;
-    }
-    .tabs-nav > button {
-      flex: 1;
-      display: block;
-      cursor: pointer;
-      text-align: center;
-      padding: calc(var(--padSpace) * .8) 0;
-      background-color: rgba(204, 0, 0, 55);
-      border-top: 2px solid rgba(204, 0, 0, 255);
-      font-weight: bold;
-    }
-    .tabs-nav > button:hover {
-      background-color: rgba(204, 0, 0, 255);
-    }
-    .tabs-nav > button.active {
-      background-color: rgba(0, 0, 0, 0);
-      border-color: rgba(0, 0, 0, 255);
-      color: var(--colorPrimary);
-    }
-    .tabs-info {
-      min-height: 100px;
-      padding-top: var(--padSpace);
-    }
-    .tabs-info-row {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: stretch;
-      margin-bottom: var(--padSpace);
-      padding: 0 var(--padSpace);
-    }
-    .tabs-info-qr {
-      margin-right: var(--padSpace);
-    }
-    .tabs-info-qr > img {
-      display: block;
-      border-radius: 20%;
-    }
-    .tabs-info-title {
-      font-size: 200%;
-      margin-bottom: 10px;
-    }
-    .tabs-info-input {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: stretch;
-      background-color: #fff;
-      padding: calc(var(--padSpace) * .75) var(--padSpace);
-      box-shadow: inset 0 0 3px rgba(204, 0, 0, 255);
-    }
-    .tabs-info-input > span {
-      margin-right: var(--padSpace);
-      font-weight: bold;
-    }
-    .tabs-info-input > input {
-      flex: 1;
-      margin-right: var(--padSpace);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-weight: bold;
-      color: var(--colorPrimary);
-    }
-    .tabs-info-input > button {
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .tabs-info-stats {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      padding: var(--padSpace);
-    }
-    .tabs-info-stats .txt-label {
-      font-size: 80%;
-      text-transform: uppercase;
-      opacity: 0.5;
-    }
-  </style>
+        .profile img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-right: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-info {
+            text-align: left;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .profile-info h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #C8102E;
+        }
+
+        .profile-info p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .progress-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 20px;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-bar {
+            background: linear-gradient(to right, #C8102E, #FF6B6B);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s;
+            box-shadow: 0 2px 6px rgba(200, 16, 46, 0.5);
+        }
+
+        .progress-text {
+            margin: 10px 0;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .donation-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+        }
+
+        button {
+            background: linear-gradient(to right, #C8102E, #FF6B6B);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 25px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-size: 1rem;
+            box-shadow: 0 2px 10px rgba(200, 16, 46, 0.5);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(200, 16, 46, 0.7);
+        }
+
+        .wallet-address {
+            margin-top: 20px;
+            display: none;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .emoji-rain {
+            font-size: 2rem;
+            margin-top: 20px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .emoji {
+            position: absolute;
+            animation: fall 5s linear infinite;
+            font-size: 2rem;
+        }
+
+        @keyframes fall {
+            0% {
+                top: -50px;
+                opacity: 1;
+            }
+            100% {
+                top: 100vh;
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="card-wrap" id="card">
-    <header class="card-user">
-      <div class="card-user-hero" :style="'background-image: url(' + userInfo.hero + ')'"></div>
-      <div class="card-user-row">
-        <div class="card-user-avatar">
-          <img :src="userInfo.avatar" :alt="userInfo.name" />
+    <div class="container">
+        <div class="profile">
+            <img src="https://iili.io/dxV3QlR.jpg" alt="rmux">
+            <div class="profile-info">
+                <h2>rmux</h2>
+                <p>Professional Crackasaurus</p>
+            </div>
         </div>
-        <div class="card-user-details">
-          <div class="card-user-name">{{ userInfo.name }}</div>
-          <div class="card-user-info">{{ userInfo.info }}</div>
-        </div>
-        <div class="card-user-cta">
-          <a :href="userInfo.website" target="_blank">Website</a>
-        </div>
-      </div>
-    </header>
-    
-    <main class="tabs-wrap">
-      <nav class="tabs-nav">
-        <button v-for="w in walletsList" :key="w.symbol" :class="{ 'active': w.active }" @click="selectWallet( w.symbol )">{{ w.symbol }}</button>
-      </nav>
-      
-      <section class="tabs-info">
-        <div class="tabs-info-row">
-          <div class="tabs-info-qr">
-            <img :src="getQrImage()" :alt="wallet.name" />
-          </div>
-          <div class="tabs-info-details">
-            <div class="tabs-info-title">Donate {{ wallet.name }}</div>
-            <div class="tabs-info-warn">Send only {{ wallet.name }} ({{ wallet.symbol }}) to this deposit address. Sending any other coin or token to this address may result in the loss of your donation. Thanks!</div>
-          </div>
-        </div>
+
+        <h1>Help Me Get a New Phone!</h1>
+        <p>My current phone is absolute garbage, and I need your help to raise <strong>€400</strong> for a new one. So far, we've raised <strong>€120</strong>!</p>
         
-        <div class="tabs-info-input">
-          <span>Address</span>
-          <input type="text" :value="wallet.address" readonly />
-          <button type="button" @click="copyText( wallet.address )">
-            <span v-if="wallet.copied">✔ Copied</span>
-            <span v-else>✚ Copy</span>
-          </button>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar" style="width: 30%;"></div>
         </div>
-        
-        <div class="tabs-info-stats">
-          <div>
-            <span class="txt-label">Price USD</span> <br />
-            <span>${{ stats.price | toMoney( 2 ) }}</span>
-          </div>
-          <div>
-            <span class="txt-label">Market Cap</span> <br />
-            <span>{{ stats.cap | toMoney( 0 ) }}</span>
-          </div>
-          <div>
-            <span class="txt-label">Supply</span> <br />
-            <span>{{ stats.supply | toMoney( 0 ) }}</span>
-          </div>
+        <div class="progress-text">€120 / €400</div>
+
+        <div class="donation-buttons">
+            <button onclick="showAddress('ETH')">Donate with ETH</button>
+            <button onclick="showAddress('BTC')">Donate with BTC</button>
+            <button onclick="showAddress('SOL')">Donate with SOL</button>
         </div>
-      </section>
-    </main>
-  </div>
-  
-  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-  <script>
-    // User details
-    const userInfo = {
-      avatar: 'https://iili.io/dxV3QlR.jpg',
-      hero: 'https://static.codepen.io/assets/profile/profile-bg-8ff33bd9518be912289d4620cb48f21eb5c9a2e0b9577484126cfe10a5fb354f.svg',
-      website: 'dis',
-      name: 'rmux',
-      info: 'professional crackasaurus',
-    };
 
-    // Crypto wallets
-    const cryptoWallets = [
-      { symbol: 'BTC', name: 'Bitcoin', address: 'bc1qsda928cuq5rcgurl39g2hhwqe8p22rckf247z8' },
-      { symbol: 'ETH', name: 'Ethereum', address: '0x7758216f24a9AA58283B1eBeEe67B8306ABf8483' },
-      { symbol: 'SOL', name: 'Solana', address: 'BtQ7BSm26jVLNqu57cpaASfibyvMjn8zX4Lkgjz1iFn7' },
-    ];
+        <div id="wallet-address" class="wallet-address"></div>
+        <div id="emoji-rain" class="emoji-rain"></div>
+    </div>
 
-    // Number format filter
-    Vue.filter('toMoney', (num, decimals) => {
-      let o = { style: 'decimal', minimumFractionDigits: decimals, maximumFractionDigits: decimals };
-      return new Intl.NumberFormat('en-US', o).format(num);
-    });
+    <script>
+        const currentAmount = 120; // Update this dynamically as needed
+        const goalAmount = 400;
 
-    // Vue instance
-    new Vue({
-      el: '#card',
-      data: {
-        userInfo,
-        cryptoWallets,
-        tab: 'BTC',
-        wallet: {},
-        statsCache: {},
-        stats: {},
-      },
-      computed: {
-        // Compute list wallets for tabs
-        walletsList() {
-          return this.cryptoWallets.map(w => {
-            w.active = (w.symbol === this.tab);
-            return w;
-          });
-        },
-      },
-      methods: {
-        // Select active tab wallet
-        selectWallet(symbol) {
-          let wallet = this.cryptoWallets.find(w => w.symbol === symbol);
-          if (!wallet) return;
-          wallet.copied = 0;
-          this.wallet = wallet;
-          this.tab = symbol;
-          this.fetchStats(symbol);
-        },
-        // Copy text to clipboard
-        copyText(txt) {
-          txt = String(txt || '').trim();
-          if (!txt) return;
-          let input = document.createElement('input');
-          document.body.appendChild(input);
-          input.value = txt;
-          input.select();
-          document.execCommand('Copy');
-          document.body.removeChild(input);
-          this.wallet = Object.assign({}, this.wallet, { copied: 1 });
-        },
-        // Get QR image URL for selected wallet
-        getQrImage() {
-          const w = 180;
-          const h = 180;
-          const a = this.wallet.address;
-          return `https://chart.googleapis.com/chart?chs=${w}x${h}&cht=qr&choe=UTF-8&chl=${a}`;
-        },
-        // Set coin stats
-        setStats(symbol, data) {
-          let price = 0;
-          let cap = 0;
-          let supply = 0;
-          let time = Date.now();
-          let stats = Object.assign({ price, cap, supply, time }, data);
-          this.statsCache[symbol] = stats;
-          this.stats = stats;
-        },
-        // Fetch market stats for a symbol
-        fetchStats(symbol) {
-          let stats = this.statsCache[symbol] || null;
-          let price = stats ? stats.price : 0;
-          let secs = stats ? ((Date.now() - stats.time) / 1000) : 0;
+        function showAddress(crypto) {
+            let address;
+            switch (crypto) {
+                case 'ETH':
+                    address = '0x7758216f24a9AA58283B1eBeEe67B8306ABf8483';
+                    break;
+                case 'BTC':
+                    address = 'bc1qsda928cuq5rcgurl39g2hhwqe8p22rckf247z8';
+                    break;
+                case 'SOL':
+                    address = 'BtQ7BSm26jVLNqu57cpaASfibyvMjn8zX4Lkgjz1iFn7';
+                    break;
+            }
 
-          // Use values from cache
-          if (price && secs < 300) {
-            return this.setStats(symbol, stats);
-          }
-          // Reset and fetch new values from API
-          this.setStats(symbol);
-          const xhr = new XMLHttpRequest();
-          // Updated API URL for CoinGecko
-          xhr.open('GET', `https://api.coingecko.com/api/v3/simple/price?ids=${symbol.toLowerCase()}&vs_currencies=usd&include_market_cap=true&include_supply=true`, true);
-          xhr.responseType = 'json';
-          xhr.addEventListener('load', e => {
-            if (!xhr.response || !xhr.response[symbol.toLowerCase()]) return;
-            let price = xhr.response[symbol.toLowerCase()].usd || 0;
-            let cap = xhr.response[symbol.toLowerCase()].usd_market_cap || 0; // Adjusted to match CoinGecko's response
-            let supply = xhr.response[symbol.toLowerCase()].supply || 0; // Adjusted to match CoinGecko's response
-            this.setStats(symbol, { price, cap, supply });
-          });
-          xhr.send();
-        },
-      },
-      mounted() {
-        this.selectWallet(this.tab);
-      },
-    });
-  </script>
+            const walletAddressDiv = document.getElementById('wallet-address');
+            walletAddressDiv.innerHTML = `
+                <p>Wallet Address: <strong>${address}</strong></p>
+                <button onclick="copyAddress('${address}')">Copy Address</button>
+            `;
+            walletAddressDiv.style.display = 'block';
+
+            checkGoal();
+        }
+
+        function copyAddress(address) {
+            navigator.clipboard.writeText(address).then(() => {
+                alert('Address copied to clipboard!');
+            });
+        }
+
+        function checkGoal() {
+            if (currentAmount >= goalAmount) {
+                document.getElementById('emoji-rain').style.display = 'block';
+                createEmojiRain();
+            }
+        }
+
+        function createEmojiRain() {
+            for (let i = 0; i < 30; i++) { // Adjust the number of emojis as needed
+                const emoji = document.createElement('div');
+                emoji.classList.add('emoji');
+                emoji.innerText = '💰';
+                emoji.style.left = Math.random() * 100 + 'vw';
+                emoji.style.animationDuration = Math.random() * 3 + 2 + 's'; // Random duration
+                document.getElementById('emoji-rain').appendChild(emoji);
+
+                // Remove emoji after animation ends
+                emoji.addEventListener('animationend', () => {
+                    emoji.remove();
+                });
+            }
+        }
+    </script>
 </body>
 </html>
